@@ -32,9 +32,9 @@ public class FallingStarRenderer {
     private static final double END_Y = 28.0;
 
     private static final int TRAIL_SEGMENTS = 20;
-    /** Ticks between streaks. TESTING: every 5 seconds. Production values: 900f and 1800f. */
+    /** Ticks between streaks: 5 to 10 seconds. */
     private static final float MIN_GAP = 100f;
-    private static final float MAX_GAP = 100f;
+    private static final float MAX_GAP = 200f;
 
     private static final float[][] COLOURS = {
             {1.00f, 1.00f, 1.00f},
