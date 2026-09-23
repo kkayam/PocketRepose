@@ -14,7 +14,7 @@ public class PocketTimeData extends PersistentState {
     public static final int SPEED_FAST = 10;
 
     private long timeOfDay = 6000L;
-    private int speed = SPEED_NORMAL;
+    private int speed = SPEED_STOPPED;
 
     public static PocketTimeData get(ServerWorld world) {
         PersistentStateManager mgr = world.getPersistentStateManager();
@@ -31,7 +31,7 @@ public class PocketTimeData extends PersistentState {
 
     public void readNbt(NbtCompound nbt) {
         this.timeOfDay = nbt.getLong("timeOfDay");
-        this.speed = nbt.contains("speed") ? nbt.getInt("speed") : SPEED_NORMAL;
+        this.speed = nbt.contains("speed") ? nbt.getInt("speed") : SPEED_STOPPED;
     }
 
     @Override
