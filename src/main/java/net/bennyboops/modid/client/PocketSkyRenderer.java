@@ -41,7 +41,6 @@ public class PocketSkyRenderer implements DimensionRenderingRegistry.SkyRenderer
     private VertexBuffer starsA;
     private VertexBuffer starsB;
     private final FloatingShardRenderer shards = new FloatingShardRenderer();
-    private final FallingStarRenderer fallingStars = new FallingStarRenderer();
 
     // Palette. Each colour is {r, g, b} in 0..1.
     private static final float[] ZENITH_DAY = {0.46f, 0.42f, 0.90f};
@@ -92,7 +91,6 @@ public class PocketSkyRenderer implements DimensionRenderingRegistry.SkyRenderer
         renderLowerDome(pose, projection, day, horizon, time);
         renderStars(matrices, projection, night, time, clear);
         renderAurora(pose, projection, night, time, clear);
-        fallingStars.render(pose, projection, time, night, clear);
         renderSunAndMoon(matrices, projection, world, skyAngle, clear, tickDelta);
         shards.render(matrices, projection, context.camera().getPos(), time, day);
         renderMistSea(matrices, projection, context.camera().getPos(), day, horizon, time);

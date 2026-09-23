@@ -9,7 +9,9 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.random.Random;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.bennyboops.modid.client.FallingStarRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
@@ -24,6 +26,7 @@ public class PocketReposeClient implements ClientModInitializer {
     private static final String DIMENSION_PREFIX = "pocket_dimension_";
 
     private static final PocketSkyRenderer SKY_RENDERER = new PocketSkyRenderer();
+    private static final FallingStarRenderer FALLING_STARS = new FallingStarRenderer();
     private static final Set<RegistryKey<World>> REGISTERED = new HashSet<>();
 
     @Override
@@ -31,6 +34,14 @@ public class PocketReposeClient implements ClientModInitializer {
         DimensionRenderingRegistry.registerDimensionEffects(POCKET_EFFECTS_ID, new PocketDimensionEffects());
         ParticleFactoryRegistry.getInstance().register(ModParticles.RUNE, RuneParticle.Factory::new);
         ClientTickEvents.END_CLIENT_TICK.register(PocketReposeClient::spawnEnchantSwirl);
+
+        // Falling stars live in world space near the island, so they are drawn after the
+        // terrain (not in the sky pass) and the island can occlude them.
+        WorldRenderEvents.AFTER_TRANSLUCENT.register(context -> {
+            if (context.world() != null && isPocketDimension(context.world().getRegistryKey())) {
+                FALLING_STARS.render(context);
+            }
+        });
 
         // Pocket worlds are created at runtime with dynamic keys, so the sky renderer is
         // attached the first time the client finds itself inside one of them.
