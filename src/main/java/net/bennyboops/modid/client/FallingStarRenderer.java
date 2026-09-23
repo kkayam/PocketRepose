@@ -118,14 +118,15 @@ public class FallingStarRenderer {
 
     private void spawn(float time) {
         Star s = new Star();
-        // Start high above a point just off the island's edge, fall steeply past it with a little drift.
+        // The island spans 4..44 on both axes (28 blocks from centre at the corners), so start
+        // beyond that and only ever drift outward, so a star never crosses over the land.
         double angle = random.nextDouble() * Math.PI * 2;
-        double radius = 22 + random.nextDouble() * 50;
+        double radius = 34 + random.nextDouble() * 46;
         double sx = CENTER_X + Math.cos(angle) * radius;
         double sz = CENTER_Z + Math.sin(angle) * radius;
         double sy = 150 + random.nextDouble() * 40;
-        double driftAngle = random.nextDouble() * Math.PI * 2;
-        double drift = 10 + random.nextDouble() * 25;
+        double driftAngle = angle + (random.nextDouble() - 0.5) * (Math.PI * 0.45);
+        double drift = 8 + random.nextDouble() * 22;
         s.start = new Vec3d(sx, sy, sz);
         s.end = new Vec3d(sx + Math.cos(driftAngle) * drift, END_Y, sz + Math.sin(driftAngle) * drift);
         s.spawnTime = time;
